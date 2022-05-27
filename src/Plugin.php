@@ -20,10 +20,6 @@ class Plugin
     public function __construct($plugin_file)
     {
         $this->plugin_file = $plugin_file;
-        /**
-         * Prevent plugin to be activated as a regular plugin.
-         */
-        register_activation_hook($plugin_file, [$this, 'preventPluginActivation']);
 
         /**
          * Check if the plugin is installed as a regular plugin.
@@ -46,18 +42,6 @@ class Plugin
             $plugins = is_string(DISABLED_PLUGINS) ? unserialize(DISABLED_PLUGINS, [false]) : DISABLED_PLUGINS;
         }
         return !empty($plugins) && is_array($plugins) ? $plugins : [];
-    }
-
-    /**
-     * If this plugin is activated as a regular plugin.
-     */
-    public function preventPluginActivation()
-    {
-        wp_die(
-            __('Plugin Disabler only works as a must-use plugin in a bedrock site.', 'plugin-disabler'),
-            'Plugin Disabler',
-            ['back_link' => true]
-        );
     }
 
     /**
